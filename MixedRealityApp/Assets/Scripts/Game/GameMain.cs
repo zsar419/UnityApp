@@ -52,10 +52,10 @@ public class GameMain : MonoBehaviour {
 	}*/
 
 	private float loLim = 0.005F;
-	private float hiLim = 0.3F;
+	private float hiLim = 0.1F;
 	private int steps = 0;
 	private bool stateH = false;
-	private float fHigh = 8.0F;
+	private float fHigh = 10.0F;
 	private float curAcc= 0F;
 	private float fLow = 0.2F;
 	private float avgAcc;
