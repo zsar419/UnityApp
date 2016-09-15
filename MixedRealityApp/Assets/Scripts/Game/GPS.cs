@@ -4,14 +4,13 @@ using System.Collections;
 
 public class GPS : MonoBehaviour {
 	public Text position;
-	public float latitude;
-	public float longitude;
-	public double timestamp;
+	private float latitude, longitude;
+	private double timestamp;
 
 	void Start () {
 		Input.location.Start();
-		// Ticks (every 2 secs) the current gps position (reduce performance)
-		InvokeRepeating("RetrieveGPSData", 0, 2);
+		// Ticks (every 1 secs) the current gps position (reduce performance)
+		InvokeRepeating("RetrieveGPSData", 0, 1);
 	}
 	
 	void RetrieveGPSData() {

@@ -4,19 +4,14 @@ using System.Collections;
 
 public class AccelerometerMovementScript : MonoBehaviour {
 	public Text accelerationText;
-	public float maxX;
-	public float maxY;
-	public float maxZ;
 
-	public float minX;
-	public float minY;
-	public float minZ;
+	private float maxX, maxY, maxZ;
+	private float minX, minY, minZ;
 
 	void Start () {
 		Input.gyro.enabled = true;
 	}
 
-	// Update is called once per frame
 	void Update () {
 		//Vector3 accelerationlessgravity = Input.acceleration - Input.gyro.gravity;
 		//Vector3 acceleration = Input.gyro.userAcceleration;
