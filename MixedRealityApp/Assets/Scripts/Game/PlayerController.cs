@@ -5,6 +5,14 @@ public class PlayerController : MonoBehaviour {
 	public float movespeed = 0.0f;
 	public GameObject gameUIManager;
 
+	public int currentSteps;
+	public float currentDistance;
+	public float time;
+
+	void Start(){
+		
+	}
+
 	void FixedUpdate(){
 		// Get steps and replace it instead of vertical
 
