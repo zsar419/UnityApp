@@ -9,13 +9,14 @@ public class GameManager : MonoBehaviour {
 	private static GameManager instance;
 	public static GameManager Instance{ get{return instance; }}
 
-	public int maxSteps;
-	public int maxDistance;
-	public Text maxStepText;
-	public Text maxDistanceText;
+	public float  maxTimerun, maxSteps, maxDistance;
 
 	void Awake () {
-		instance = this;
+		if(instance == null) 
+			instance = this;
+		else if(instance != this){
+			Destroy(gameObject);
+		}
 
 		// Object persists through scenes
 		DontDestroyOnLoad (gameObject);
@@ -23,34 +24,26 @@ public class GameManager : MonoBehaviour {
 		// Check if we have saved data before
 		if (PlayerPrefs.HasKey ("MaxSteps")) Load ();
 		else Save ();
-
-		maxStepText.text = "Max steps: "+ maxSteps;
-		maxDistanceText.text = "Max distance: " + maxDistance;
-
 	}
 
-	void Update () {
-		
-	}
 
 	private void Load(){
 		// We have had a previous session - thus load saved data
-		maxSteps = PlayerPrefs.GetInt("MaxSteps");
-		maxDistance= PlayerPrefs.GetInt("MaxDistance");
+		maxTimerun = PlayerPrefs.GetFloat("MaxTimeRun");
+		maxSteps = PlayerPrefs.GetFloat("MaxSteps");
+		maxDistance= PlayerPrefs.GetFloat("MaxDistance");
 	}
 
-	private void Save(){
+	public void Save(float time= 0, float steps = 0, float distance = 0){
 		// We dont have a saved session - load new game data
-		PlayerPrefs.SetInt("MaxSteps", 0);
-		PlayerPrefs.SetInt("MaxDistance", 0);
+		PlayerPrefs.SetFloat("MaxTimeRun", time);
+		PlayerPrefs.SetFloat("MaxSteps", steps);
+		PlayerPrefs.SetFloat("MaxDistance", distance);
 	}
 
 	public void ResetStats(){
 		Save ();
 		Load ();
-
-		maxStepText.text = "Max steps: " + maxSteps;
-		maxDistanceText.text = "Max distance: " + maxDistance;
 	}
 
 }

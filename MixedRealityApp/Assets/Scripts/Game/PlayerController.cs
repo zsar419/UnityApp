@@ -1,13 +1,18 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class PlayerController : MonoBehaviour {
 	public float movespeed = 0.0f;
 	public GameObject gameUIManager;
 
-	public int currentSteps;
-	public float currentDistance;
-	public float time;
+	public Text gameEndTimeRun;
+	public Text gameEndStepsText;
+	public Text gameEndDistanceText;
+
+	public Text maxTimeRun;
+	public Text maxtepsText;
+	public Text maxDistanceText;
 
 	void Start(){
 		
@@ -23,12 +28,34 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	public void OnTriggerEnter(Collider other){
+		// Game end panel data
 		if(other.tag == "Zombie"){
-			//Destroy (other.gameObject);	// destroy zombie
-			// other.GetComponent<MeshRenderer>().enabled = false;	// or Disable zombie rendering
-			Debug.Log ("Collided");
+			Debug.Log ("COLLISION");
+
+			// Displaying current game stats
+			float currTime = (float)gameUIManager.GetComponent<GameMain> ().GetTime ();
+			float currSteps = gameUIManager.GetComponent<Pedometer>().GetSteps();
+			float currDistance = gameUIManager.GetComponent<GPS> ().GetDistance ();
+
+			gameEndTimeRun.text += currTime + " s";
+			gameEndStepsText.text += currSteps;
+			gameEndDistanceText.text += currDistance + " m";
+
+			// Calculating if current game stats > previous maximum stats
+
+			GameManager.Instance.maxTimerun = Mathf.Max (currTime, GameManager.Instance.maxTimerun);
+			GameManager.Instance.maxSteps = Mathf.Max (currSteps, GameManager.Instance.maxSteps);
+			GameManager.Instance.maxDistance = Mathf.Max (currDistance, GameManager.Instance.maxDistance);
+			GameManager.Instance.Save ((float)GameManager.Instance.maxTimerun, GameManager.Instance.maxSteps, GameManager.Instance.maxDistance);
+
+			// Comparison in relation to max stats
+			maxTimeRun.text += GameManager.Instance.maxTimerun + " s";
+			maxtepsText.text += GameManager.Instance.maxSteps;
+			maxDistanceText.text += GameManager.Instance.maxDistance + " m";
+
 			gameUIManager.GetComponent<GameMain>().ShowEndGameMenu();
-			// Call function to stop game and raise menu
+
+
 		}
 	}
 
