@@ -34,7 +34,8 @@ public class PlayerController : MonoBehaviour {
 
 			// Displaying current game stats
 			float currTime = (float)gameUIManager.GetComponent<GameMain> ().GetTime ();
-			float currSteps = gameUIManager.GetComponent<Pedometer>().GetSteps();
+			//float currSteps = gameUIManager.GetComponent<Pedometer>().GetSteps();
+			float currSteps = gameUIManager.GetComponent<Pedometer>().stepDetector();
 			float currDistance = gameUIManager.GetComponent<GPS> ().GetDistance ();
 
 			gameEndTimeRun.text += currTime + " s";
@@ -54,7 +55,6 @@ public class PlayerController : MonoBehaviour {
 			maxDistanceText.text += GameManager.Instance.maxDistance + " m";
 
 			gameUIManager.GetComponent<GameMain>().ShowEndGameMenu();
-
 
 		}
 	}

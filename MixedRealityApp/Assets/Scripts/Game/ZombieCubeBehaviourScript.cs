@@ -4,7 +4,7 @@ using System.Collections;
 public class ZombieCubeBehaviourScript : MonoBehaviour {
 
     public float movementSpeed = 0.1F;
-	public float maxForce = 500;
+	//public float maxForce = 500;
     public GameObject player;	// ARCamera
     private Rigidbody rb;		// Cube
 

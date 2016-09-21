@@ -8,7 +8,7 @@ public class Pedometer : MonoBehaviour {
 	public Text stepText;
 
 
-	/*private float loLim = 0.005F;
+	private float loLim = 0.005F;
 	private float hiLim = 0.1F;
 	private int steps = 0;
 	private bool stateH = false;
@@ -18,8 +18,8 @@ public class Pedometer : MonoBehaviour {
 	private float avgAcc;
 
 	public int stepDetector(){
-		curAcc = Mathf.Lerp (curAcc, Input.acceleration.magnitude, Time.deltaTime * fHigh);
-		avgAcc = Mathf.Lerp (avgAcc, Input.acceleration.magnitude, Time.deltaTime * fLow);
+		curAcc = Mathf.Lerp (curAcc, Input.acceleration.x, Time.deltaTime * fHigh);
+		avgAcc = Mathf.Lerp (avgAcc, Input.acceleration.x, Time.deltaTime * fLow);
 		float delta = curAcc - avgAcc;
 
 		if (!stateH) {
@@ -40,11 +40,11 @@ public class Pedometer : MonoBehaviour {
 	void FixedUpdate() {
 		//checkIsMovement ();
 		stepDetector();
-		counterText.text = "Counter: " + steps;
-	} */
+		stepText.text = "Counter: " + steps;
+	}
 
-	private AndroidJavaObject plugin;
-	private float initialStep, steps;
+	//private AndroidJavaObject plugin;
+	//private float initialStep, steps;
 
 	/*void Start () {
 		#if UNITY_ANDROID
@@ -82,7 +82,7 @@ public class Pedometer : MonoBehaviour {
 	}*/
 
 
-	void Update(){
+	/*void Update(){
 		stepText.text = "Steps: " + steps;
 	}
 
@@ -92,6 +92,6 @@ public class Pedometer : MonoBehaviour {
 
 	public void IncrementPCSteps(){
 		steps++;
-	}
+	}*/
 
 }
