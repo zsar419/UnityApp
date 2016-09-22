@@ -21,6 +21,7 @@ public class ZombieCubeBehaviourScript : MonoBehaviour {
 		Vector3 totalForce = direction * movementSpeed * Time.deltaTime;
 		// Need to fix total force, need cap for vector
 		rb.AddForce (totalForce);
+		Debug.Log ("hi");
     }
 
 }
