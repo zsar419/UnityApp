@@ -23,8 +23,8 @@ public class Pedometer : MonoBehaviour {
     }
 
 	public int stepDetector(){
-		curAcc = Mathf.Lerp (curAcc, Input.acceleration.x, Time.deltaTime * fHigh);
-		avgAcc = Mathf.Lerp (avgAcc, Input.acceleration.x, Time.deltaTime * fLow);
+		curAcc = Mathf.Lerp (curAcc, Input.acceleration.magnitude, Time.deltaTime * fHigh);
+		avgAcc = Mathf.Lerp (avgAcc, Input.acceleration.magnitude, Time.deltaTime * fLow);
 		float delta = curAcc - avgAcc;
 
 		if (!stateH) {
@@ -48,10 +48,10 @@ public class Pedometer : MonoBehaviour {
 		stepText.text = "Counter: " + steps;
 	}
 
-	//private AndroidJavaObject plugin;
-	//private float initialStep, steps;
+	/*private AndroidJavaObject plugin;
+	private float initialStep, steps;
 
-	/*void Start () {
+	void Start () {
 		#if UNITY_ANDROID
 		plugin = new AndroidJavaClass("jp.kshoji.unity.sensor.UnitySensorPlugin").CallStatic<AndroidJavaObject>("getInstance");
 		plugin.Call("setSamplingPeriod", 100 * 1000); // refresh sensor 100 mSec eachc
@@ -72,18 +72,20 @@ public class Pedometer : MonoBehaviour {
 	void Update () {
 		#if UNITY_ANDROID
 		if (plugin != null) {
-			steps =  plugin.Call<float[]>("getSensorValues", "stepcounter")[0] - initialStep;
-			counterText.text = "Steps: " + steps; 
+			stepText.text = "Steps: " + stepDetector(); 
 			//displayVals("stepcounter");
 		}
 		#endif
 	}
-
 	// For displaying other android sensor properties if required
 	private void displayVals(string input){
-		counterText.text += input+": ";
-		plugin.Call<float[]>("getSensorValues", input).ToList().ForEach(s => counterText.text += s.ToString("0.00") + ", ");
-		counterText.text += "\n";
+		stepText.text += input+": ";
+		plugin.Call<float[]>("getSensorValues", input).ToList().ForEach(s => stepText.text += s.ToString("0.00") + ", ");
+		stepText.text += "\n";
+	}
+
+	public float stepDetector(){
+		return plugin.Call<float[]>("getSensorValues", "stepcounter")[0] - initialStep;
 	}*/
 
 
