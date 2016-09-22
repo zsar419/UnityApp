@@ -4,11 +4,11 @@ using System;
 using System.Collections;
 
 public class PlayerController : MonoBehaviour {
-	public float movespeed = 1.0f;
+	public float metresPerStep;
 	public GameObject gameUIManager;
-    private int currSteps;
-    private int lastSteps;
+    private int currSteps = 0, lastSteps = 0;
 
+	public Text distanceText;
 	public Text gameEndTimeRun;
 	public Text gameEndStepsText;
 	public Text gameEndDistanceText;
@@ -17,24 +17,19 @@ public class PlayerController : MonoBehaviour {
 	public Text maxtepsText;
 	public Text maxDistanceText;
 
-	void Start(){
-        currSteps = 0;
-        lastSteps = 0;
-	}
-
 	void FixedUpdate(){
-        // Get steps and replace it instead of vertical
         lastSteps = currSteps;
-		currSteps = Int32.Parse(""+gameUIManager.GetComponent<Pedometer> ().stepDetector ());
-		//currSteps = gameUIManager.GetComponent<Pedometer>().currSteps;
-        float vertical = Input.GetAxis ("Vertical");
-		Vector3 forwardZ = new Vector3(0,0,vertical * Time.fixedDeltaTime * movespeed);
+		currSteps = Int32.Parse(""+gameUIManager.GetComponent<Pedometer> ().steps);
+        
+		// PC Controls
+		float vertical = Input.GetAxis ("Vertical");
+		Vector3 forwardZ = new Vector3(0,0,vertical * Time.fixedDeltaTime * metresPerStep);
 		this.transform.Translate (forwardZ, Space.World);
         
 		// To make it realistic we can get user rotation and translate in that direction so player is not confined to Z axis
-		forwardZ.z = (currSteps - lastSteps) * movespeed;
+		forwardZ.z = (currSteps - lastSteps) * metresPerStep;
         this.transform.Translate(forwardZ, Space.Self);
-		//GetComponent<Transform>().Translate (forward, Space.World);
+		distanceText.text = "Distance: " + this.transform.position;
 	}
 
 	public void OnTriggerEnter(Collider other){
@@ -45,8 +40,8 @@ public class PlayerController : MonoBehaviour {
 			// Displaying current game stats
 			float currTime = (float)gameUIManager.GetComponent<GameMain> ().GetTime ();
 			//float currSteps = gameUIManager.GetComponent<Pedometer>().GetSteps();
-			float currSteps = gameUIManager.GetComponent<Pedometer>().stepDetector();
-			float currDistance = gameUIManager.GetComponent<GPS> ().GetDistance ();
+			float currSteps = gameUIManager.GetComponent<Pedometer>().steps;
+			float currDistance = currSteps*2;
 
 			gameEndTimeRun.text += currTime + " s";
 			gameEndStepsText.text += currSteps;
