@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour {
 	public GameObject gameUIManager;
     private int currSteps;
     private int lastSteps;
+    private Pedometer pedo;
 
 	public Text gameEndTimeRun;
 	public Text gameEndStepsText;
@@ -19,12 +20,13 @@ public class PlayerController : MonoBehaviour {
 	void Start(){
         currSteps = 0;
         lastSteps = 0;
+        pedo = gameUIManager.GetComponent<Pedometer>();
 	}
 
 	void FixedUpdate(){
         // Get steps and replace it instead of vertical
         lastSteps = currSteps;
-        currSteps = gameUIManager.GetComponent<Pedometer>().currSteps;
+        currSteps = pedo.currSteps;
         float vertical = Input.GetAxis ("Vertical");
 		Vector3 forwardZ = new Vector3(0,0,vertical * Time.fixedDeltaTime * movespeed);
 		this.transform.Translate (forwardZ, Space.World);
