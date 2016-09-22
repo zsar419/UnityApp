@@ -3,8 +3,10 @@ using UnityEngine.UI;
 using System.Collections;
 
 public class PlayerController : MonoBehaviour {
-	public float movespeed = 0.0f;
+	public float movespeed = 1.0f;
 	public GameObject gameUIManager;
+    private int currSteps;
+    private int lastSteps;
 
 	public Text gameEndTimeRun;
 	public Text gameEndStepsText;
@@ -15,15 +17,19 @@ public class PlayerController : MonoBehaviour {
 	public Text maxDistanceText;
 
 	void Start(){
-		
+        currSteps = 0;
+        lastSteps = 0;
 	}
 
 	void FixedUpdate(){
-		// Get steps and replace it instead of vertical
-
-		float vertical = Input.GetAxis ("Vertical");
-		Vector3 forwardZ = new Vector3(0,0,vertical * Time.deltaTime*movespeed);
+        // Get steps and replace it instead of vertical
+        lastSteps = currSteps;
+        currSteps = gameUIManager.GetComponent<Pedometer>().currSteps;
+        float vertical = Input.GetAxis ("Vertical");
+		Vector3 forwardZ = new Vector3(0,0,vertical * Time.fixedDeltaTime * movespeed);
 		this.transform.Translate (forwardZ, Space.World);
+        forwardZ.z = (currSteps - lastSteps) * Time.fixedDeltaTime * movespeed;
+        this.transform.Translate(forwardZ, Space.Self);
 		//GetComponent<Transform>().Translate (forward, Space.World);
 	}
 
