@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System;
 using System.Collections;
 
 public class PlayerController : MonoBehaviour {
@@ -24,11 +25,14 @@ public class PlayerController : MonoBehaviour {
 	void FixedUpdate(){
         // Get steps and replace it instead of vertical
         lastSteps = currSteps;
-        currSteps = gameUIManager.GetComponent<Pedometer>().currSteps;
+		currSteps = Int32.Parse(""+gameUIManager.GetComponent<Pedometer> ().stepDetector ());
+		//currSteps = gameUIManager.GetComponent<Pedometer>().currSteps;
         float vertical = Input.GetAxis ("Vertical");
 		Vector3 forwardZ = new Vector3(0,0,vertical * Time.fixedDeltaTime * movespeed);
 		this.transform.Translate (forwardZ, Space.World);
-        forwardZ.z = (currSteps - lastSteps) * Time.fixedDeltaTime * movespeed;
+        
+		// To make it realistic we can get user rotation and translate in that direction so player is not confined to Z axis
+		forwardZ.z = (currSteps - lastSteps) * movespeed;
         this.transform.Translate(forwardZ, Space.Self);
 		//GetComponent<Transform>().Translate (forward, Space.World);
 	}

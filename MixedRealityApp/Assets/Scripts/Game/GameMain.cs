@@ -9,17 +9,31 @@ public class GameMain : MonoBehaviour {
 	public GameObject endgameMenu;
 	public Text timeRun;
 	public int warmupTime;
+	public int distanceFromZombie;
 	public GameObject zombie;
+	public GameObject player;
 
 	void Start () {
 		endgameMenu.SetActive (false);	// For toggling
-		zombie.active = false;
-		Invoke ("ProcessGame", warmupTime);
+		//zombie.active = false;
+		InvokeRepeating ("ProcessGame", warmupTime,2);
 	}
 
 	private void ProcessGame(){
 		// Set game difficulty
-		zombie.active = true;
+		// Need to spawn zombie at random direction and distance behind player
+		Vector3 zombieDirection ;
+		if(player.transform.rotation.eulerAngles.normalized == new Vector3(0,0,0)){
+			zombieDirection = new Vector3 (0, 0, 1) * -distanceFromZombie;
+		}else{
+			zombieDirection = player.transform.rotation.eulerAngles.normalized * -distanceFromZombie;
+		}
+		Debug.Log (zombieDirection);
+		Vector3 finalPos = player.transform.position + zombieDirection;
+		finalPos.y = -1.3f;
+		Debug.Log (finalPos);
+		Instantiate(zombie, finalPos, Quaternion.identity);
+
 	}
 
 	public void Update(){
