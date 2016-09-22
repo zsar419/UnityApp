@@ -8,9 +8,18 @@ public class GameMain : MonoBehaviour {
 
 	public GameObject endgameMenu;
 	public Text timeRun;
+	public int warmupTime;
+	public GameObject zombie;
 
 	void Start () {
 		endgameMenu.SetActive (false);	// For toggling
+		zombie.active = false;
+		Invoke ("ProcessGame", warmupTime);
+	}
+
+	private void ProcessGame(){
+		// Set game difficulty
+		zombie.active = true;
 	}
 
 	public void Update(){

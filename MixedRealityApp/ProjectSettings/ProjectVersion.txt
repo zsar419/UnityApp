@@ -1,2 +1,6 @@
+<<<<<<< HEAD
 m_EditorVersion: 5.4.1f1
+=======
+m_EditorVersion: 5.3.5p1
+>>>>>>> refs/remotes/zsar419/master
 m_StandardAssetsVersion: 0
