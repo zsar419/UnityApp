@@ -17,6 +17,11 @@ public class Pedometer : MonoBehaviour {
 	private float fLow = 0.2F;
 	private float avgAcc;
 
+    public int currSteps
+    {
+        get { return steps; }
+    }
+
 	public int stepDetector(){
 		curAcc = Mathf.Lerp (curAcc, Input.acceleration.x, Time.deltaTime * fHigh);
 		avgAcc = Mathf.Lerp (avgAcc, Input.acceleration.x, Time.deltaTime * fLow);
