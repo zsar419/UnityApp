@@ -16,6 +16,9 @@ public class PlayerController : MonoBehaviour {
 	public Text maxTimeRun;
 	public Text maxtepsText;
 	public Text maxDistanceText;
+    public AudioClip caughtAudio;
+    public AudioSource caughtAudioSource;
+
 
 	void FixedUpdate(){
         lastSteps = currSteps;
@@ -36,6 +39,10 @@ public class PlayerController : MonoBehaviour {
 		// Game end panel data
 		if(other.tag == "Zombie"){
 			Debug.Log ("COLLISION");
+
+            //Stops the background music and plays a final audio clip when the player is caught. 
+            caughtAudioSource.clip = caughtAudio;
+            caughtAudioSource.Play();
 
 			// Displaying current game stats
 			float currTime = (float)gameUIManager.GetComponent<GameMain> ().GetTime ();
