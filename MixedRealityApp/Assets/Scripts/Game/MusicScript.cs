@@ -4,11 +4,14 @@ using System.Collections.Generic;
 
 public class MusicScript : MonoBehaviour
 {
-
+    public GameObject uiManager;
     public AudioSource audioTrack;
+    public AudioSource heartBeat;
     public List<AudioClip> tracks;
     System.Random rnd = new System.Random();
+    public float zombieCloseThreshold;
 
+    private float closestDist;
 
     void Start()
     {
@@ -21,13 +24,23 @@ public class MusicScript : MonoBehaviour
         PlayRandomTrack();
     }
 
-    void FixedUpdate()
+    void Update()
     {
         //Once a track has stopped play another one
         if (!audioTrack.isPlaying)
         {
             PlayRandomTrack();
         }
+
+        var otherscript = uiManager.GetComponent<GameMain>();
+        closestDist = otherscript.GetClosestDist();
+
+        if (closestDist < zombieCloseThreshold)
+        {
+            heartBeat.pitch = 1.5f;
+            zombieCloseThreshold = 0;
+        }
+
     }
 
     /// <summary>

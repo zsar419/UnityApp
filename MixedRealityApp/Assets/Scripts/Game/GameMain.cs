@@ -50,6 +50,27 @@ public class GameMain : MonoBehaviour {
 		}
 	}
 
+    /// <summary>
+    /// Gets the distance of the closest zombie to the player. 
+    /// </summary>
+    public float GetClosestDist()
+    {
+        float closest = Mathf.Infinity;
+        Vector3 playerPos = player.transform.position;
+
+        foreach (var zombie in zombieList)
+        {
+            var z = (GameObject)zombie;
+            float dist = (playerPos - z.transform.position).magnitude;
+            if (dist < closest)
+            {
+                closest = dist;
+            }
+        }
+
+        return closest;
+    }
+
 	public void Update(){
 		timeRun.text = "Time run: "+ GetTime() + " s";
 	}
