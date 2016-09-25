@@ -6,16 +6,12 @@ using System.Collections;
 public class PlayerController : MonoBehaviour {
 	public float metresPerStep;
 	public GameObject gameUIManager;
-    private int currSteps = 0, lastSteps = 0;
-
+	private int currSteps = 0, lastSteps = 0;
+	private float distance = 0;
 	public Text distanceText;
-	public Text gameEndTimeRun;
-	public Text gameEndStepsText;
-	public Text gameEndDistanceText;
 
-	public Text maxTimeRun;
-	public Text maxtepsText;
-	public Text maxDistanceText;
+	public Text gameEndTimeRun, gameEndScoreText, gameEndDistanceText, gameEndOutrun;
+	public Text maxScoreText, maxDistanceText, maxOutrunText;
 
 	void FixedUpdate(){
         lastSteps = currSteps;
@@ -29,56 +25,45 @@ public class PlayerController : MonoBehaviour {
 		// To make it realistic we can get user rotation and translate in that direction so player is not confined to Z axis
 		forwardZ.z = (currSteps - lastSteps) * metresPerStep;
         this.transform.Translate(forwardZ, Space.Self);
-		distanceText.text = "Distance: " + this.transform.position;
+		distance = (float)Math.Round ((float)this.transform.position.magnitude, 2);
+		distanceText.text = "Distance: " + distance + "m";
 	}
 
 	public void OnTriggerEnter(Collider other){
 		// Game end panel data
 		if(other.tag == "Zombie"){
-			Debug.Log ("COLLISION");
+			// Turn off other text
+			gameUIManager.GetComponent<GameMain> ().TurnOffText();
+			distanceText.GetComponent<Text>().enabled = false;
+
 
 			// Displaying current game stats
 			float currTime = (float)gameUIManager.GetComponent<GameMain> ().GetTime ();
 			//float currSteps = gameUIManager.GetComponent<Pedometer>().GetSteps();
-			float currSteps = gameUIManager.GetComponent<Pedometer>().steps;
-			float currDistance = currSteps*2;
+			//float currSteps = gameUIManager.GetComponent<Pedometer>().steps;
+			float currScore = currTime - (float)gameUIManager.GetComponent<GameMain> ().warmupTime;	// Set score based on parameters
+			float currDistance = distance;
+			int outrun = gameUIManager.GetComponent<GameMain> ().outrun;
 
 			gameEndTimeRun.text += currTime + " s";
-			gameEndStepsText.text += currSteps;
+			gameEndScoreText.text += currScore;
 			gameEndDistanceText.text += currDistance + " m";
+			gameEndOutrun.text += outrun;
 
 			// Calculating if current game stats > previous maximum stats
-
-			GameManager.Instance.maxTimerun = Mathf.Max (currTime, GameManager.Instance.maxTimerun);
-			GameManager.Instance.maxSteps = Mathf.Max (currSteps, GameManager.Instance.maxSteps);
+			GameManager.Instance.maxScore = Mathf.Max (currScore, GameManager.Instance.maxScore);
 			GameManager.Instance.maxDistance = Mathf.Max (currDistance, GameManager.Instance.maxDistance);
-			GameManager.Instance.Save ((float)GameManager.Instance.maxTimerun, GameManager.Instance.maxSteps, GameManager.Instance.maxDistance);
+			GameManager.Instance.maxZombiesOutrun = Mathf.Max (outrun, GameManager.Instance.maxZombiesOutrun);
+			GameManager.Instance.Save (GameManager.Instance.maxScore, GameManager.Instance.maxDistance, GameManager.Instance.maxZombiesOutrun);
 
 			// Comparison in relation to max stats
-			maxTimeRun.text += GameManager.Instance.maxTimerun + " s";
-			maxtepsText.text += GameManager.Instance.maxSteps;
+			maxScoreText.text += GameManager.Instance.maxScore;
 			maxDistanceText.text += GameManager.Instance.maxDistance + " m";
+			maxOutrunText.text += GameManager.Instance.maxZombiesOutrun;
 
 			gameUIManager.GetComponent<GameMain>().ShowEndGameMenu();
 
 		}
 	}
-
-	/*
-	public float movespeed = 5.0f;
-	public float drag = 0.5f;
-
-	private Rigidbody controller;
-
-	void Start () {
-		controller = GetComponent<Rigidbody> ();
-		controller.drag = drag;
-	}
-
-	void Update () {
-		// For keyboard input
-		Vector3 dir = Vector3.zero;
-		dir.z = Input.GetAxis ("Vertical");
-		controller.AddForce (dir * movespeed);
-	}*/
+		
 }

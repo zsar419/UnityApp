@@ -43,7 +43,7 @@ public class Pedometer : MonoBehaviour {
 	}*/
 
 	private AndroidJavaObject plugin;
-	public float steps;
+	public float steps = 0;
 	private float initialStep;
 
 	void Start () {

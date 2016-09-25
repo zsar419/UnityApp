@@ -6,9 +6,14 @@ using System.Collections.Generic;
 using System;
 
 public class GameMain : MonoBehaviour {
+	public GameObject UI;
 
 	public GameObject endgameMenu;
 	public Text timeRun;
+	public Text score;
+	public Text zombiesOutrun;
+	private bool processScore;
+
 	public int warmupTime;
 	public int maxZombies;
 	public float zombieSpawnDist;
@@ -16,10 +21,12 @@ public class GameMain : MonoBehaviour {
 	public GameObject zombie;
 	public GameObject player;
 	private List<UnityEngine.Object> zombieList = new List<UnityEngine.Object>();
+	public int outrun = 0;
 
 	void Start () {
 		endgameMenu.SetActive (false);	// For toggling
-		InvokeRepeating ("ProcessGame", warmupTime,2);
+		InvokeRepeating ("ProcessGame", warmupTime, 10);
+		Invoke ("UpdateScore", warmupTime);
 	}
 
 	private void ProcessGame(){
@@ -44,6 +51,7 @@ public class GameMain : MonoBehaviour {
 			var z = (GameObject)zombieList [i];
 			float zombieDist = (playerPos - z.transform.position).magnitude;
 			if(zombieDist>maxZombieDist){
+				outrun++;
 				zombieList.RemoveAt (i);
 				DestroyObject (z);
 			}
@@ -52,12 +60,24 @@ public class GameMain : MonoBehaviour {
 
 	public void Update(){
 		timeRun.text = "Time run: "+ GetTime() + " s";
+		if (processScore)
+			score.text = "Score: " + (GetTime () - warmupTime);
+		zombiesOutrun.text = "Outrun: " + outrun;
+	}
+
+	private void UpdateScore(){
+		processScore = true;
 	}
 
 	public double GetTime(){
 		return Math.Round (Time.timeSinceLevelLoad, 1);
 	}
 
+	public void TurnOffText(){
+		timeRun.GetComponent<Text>().enabled = false;
+		score.GetComponent<Text>().enabled = false;
+		zombiesOutrun.GetComponent<Text>().enabled = false;
+	}
 
 	public void ShowEndGameMenu(){
 		//endgameMenu.SetActive (!endgameMenu.activeSelf);	// For toggling
