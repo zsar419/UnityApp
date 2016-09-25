@@ -10,8 +10,17 @@ public class PlayerController : MonoBehaviour {
 	private float distance = 0;
 	public Text distanceText;
 
+<<<<<<< HEAD
 	public Text gameEndTimeRun, gameEndScoreText, gameEndDistanceText, gameEndOutrun;
 	public Text maxScoreText, maxDistanceText, maxOutrunText;
+=======
+	public Text maxTimeRun;
+	public Text maxtepsText;
+	public Text maxDistanceText;
+    public AudioClip caughtAudio;
+    public AudioSource caughtAudioSource;
+
+>>>>>>> 23b01fc193e81e32db599b401a7b40e16b5bfb4d
 
 	void FixedUpdate(){
         lastSteps = currSteps;
@@ -36,6 +45,10 @@ public class PlayerController : MonoBehaviour {
 			gameUIManager.GetComponent<GameMain> ().TurnOffText();
 			distanceText.GetComponent<Text>().enabled = false;
 
+
+            //Stops the background music and plays a final audio clip when the player is caught. 
+            caughtAudioSource.clip = caughtAudio;
+            caughtAudioSource.Play();
 
 			// Displaying current game stats
 			float currTime = (float)gameUIManager.GetComponent<GameMain> ().GetTime ();
