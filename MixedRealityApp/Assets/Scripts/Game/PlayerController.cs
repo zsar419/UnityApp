@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour {
 
 	public Text maxTimeRun;
 	public Text maxtepsText;
-	public Text maxDistanceText;
+	//public Text maxDistanceText;
     public AudioClip caughtAudio;
     public AudioSource caughtAudioSource;
 
