@@ -34,10 +34,11 @@ public class GameMain : MonoBehaviour {
 			// Set game difficulty
 			// Need to spawn zombie at random direction and distance behind player
 			Vector3 zombieDirection;
+            var q = Quaternion.AngleAxis(UnityEngine.Random.Range(-45.0f, 45.0f), Vector3.up);
 			if (player.transform.rotation.eulerAngles.normalized == new Vector3 (0, 0, 0)) {
-				zombieDirection = new Vector3 (0, 0, 1) * -zombieSpawnDist;
+				zombieDirection = (q * Vector3.forward) * -zombieSpawnDist;
 			} else {
-				zombieDirection = player.transform.rotation.eulerAngles.normalized * -zombieSpawnDist;
+				zombieDirection = (q * player.transform.rotation.eulerAngles.normalized) * -zombieSpawnDist;
 			}
 			Vector3 finalPos = player.transform.position + zombieDirection;
 			finalPos.y = -1.3f;
