@@ -16,7 +16,7 @@ public class GameMain : MonoBehaviour {
 	void Start () {
 		endgameMenu.SetActive (false);	// For toggling
 		//zombie.active = false;
-		InvokeRepeating ("ProcessGame", warmupTime,2);
+		Invoke ("ProcessGame", warmupTime);
 	}
 
 	private void ProcessGame(){
