@@ -10,17 +10,14 @@ public class PlayerController : MonoBehaviour {
 	private float distance = 0;
 	public Text distanceText;
 
-<<<<<<< HEAD
 	public Text gameEndTimeRun, gameEndScoreText, gameEndDistanceText, gameEndOutrun;
 	public Text maxScoreText, maxDistanceText, maxOutrunText;
-=======
+
 	public Text maxTimeRun;
 	public Text maxtepsText;
-	public Text maxDistanceText;
+	//public Text maxDistanceText;
     public AudioClip caughtAudio;
     public AudioSource caughtAudioSource;
-
->>>>>>> 23b01fc193e81e32db599b401a7b40e16b5bfb4d
 
 	void FixedUpdate(){
         lastSteps = currSteps;
