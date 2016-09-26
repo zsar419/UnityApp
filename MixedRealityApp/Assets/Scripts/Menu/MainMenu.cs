@@ -9,9 +9,9 @@ public class MainMenu : MonoBehaviour {
 	private Transform cameraDesiredLookAt;
 	private const float CAMERA_TRANSITION_SPEED = 3.5f;
 
-	public Text maxTimerunText;
 	public Text maxStepText;
 	public Text maxDistanceText;
+	public Text maxZombiesOutrun;
 
 	void Start () {
 		cameraTransform = Camera.main.transform;
@@ -43,8 +43,8 @@ public class MainMenu : MonoBehaviour {
 	}
 
 	public void SetStats(){
-		maxTimerunText.text = "Max time run: " + GameManager.Instance.maxTimerun;
-		maxStepText.text = "Max steps: "+ GameManager.Instance.maxSteps;
+		maxStepText.text = "Max score: "+ GameManager.Instance.maxScore;
 		maxDistanceText.text = "Max distance: " + GameManager.Instance.maxDistance;
+		maxZombiesOutrun.text = "Max zombies outrun: " + GameManager.Instance.maxZombiesOutrun;
 	}
 }

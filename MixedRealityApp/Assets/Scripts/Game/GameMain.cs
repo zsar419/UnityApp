@@ -2,48 +2,103 @@
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using System.Collections.Generic;
 using System;
 
 public class GameMain : MonoBehaviour {
+	public GameObject UI;
 
 	public GameObject endgameMenu;
 	public Text timeRun;
+	public Text score;
+	public Text zombiesOutrun;
+	private bool processScore;
+
 	public int warmupTime;
-	public int distanceFromZombie;
+	public int maxZombies;
+	public float zombieSpawnDist;
+	public float maxZombieDist;
 	public GameObject zombie;
 	public GameObject player;
+	private List<UnityEngine.Object> zombieList = new List<UnityEngine.Object>();
+	public int outrun = 0;
 
 	void Start () {
 		endgameMenu.SetActive (false);	// For toggling
-		//zombie.active = false;
-		Invoke ("ProcessGame", warmupTime);
+		InvokeRepeating ("ProcessGame", warmupTime, 10);
+		Invoke ("UpdateScore", warmupTime);
 	}
 
 	private void ProcessGame(){
-		// Set game difficulty
-		// Need to spawn zombie at random direction and distance behind player
-		Vector3 zombieDirection ;
-		if(player.transform.rotation.eulerAngles.normalized == new Vector3(0,0,0)){
-			zombieDirection = new Vector3 (0, 0, 1) * -distanceFromZombie;
-		}else{
-			zombieDirection = player.transform.rotation.eulerAngles.normalized * -distanceFromZombie;
+		if (zombieList.Count <= maxZombies) {
+			// Set game difficulty
+			// Need to spawn zombie at random direction and distance behind player
+			Vector3 zombieDirection;
+			if (player.transform.rotation.eulerAngles.normalized == new Vector3 (0, 0, 0)) {
+				zombieDirection = new Vector3 (0, 0, 1) * -zombieSpawnDist;
+			} else {
+				zombieDirection = player.transform.rotation.eulerAngles.normalized * -zombieSpawnDist;
+			}
+			Vector3 finalPos = player.transform.position + zombieDirection;
+			finalPos.y = -1.3f;
+			var zombieInstance = Instantiate (zombie, finalPos, Quaternion.identity);
+			zombieList.Add (zombieInstance);
 		}
-		Debug.Log (zombieDirection);
-		Vector3 finalPos = player.transform.position + zombieDirection;
-		finalPos.y = -1.3f;
-		Debug.Log (finalPos);
-		Instantiate(zombie, finalPos, Quaternion.identity);
 
+		// Removing from list if zombie(s) exceed max distance
+		Vector3 playerPos = player.transform.position;
+		for(int i = 0;i<zombieList.Count;i++){
+			var z = (GameObject)zombieList [i];
+			float zombieDist = (playerPos - z.transform.position).magnitude;
+			if(zombieDist>maxZombieDist){
+				outrun++;
+				zombieList.RemoveAt (i);
+				DestroyObject (z);
+			}
+		}
 	}
+
+    /// <summary>
+    /// Gets the distance of the closest zombie to the player. 
+    /// </summary>
+    public float GetClosestDist()
+    {
+        float closest = Mathf.Infinity;
+        Vector3 playerPos = player.transform.position;
+
+        foreach (var zombie in zombieList)
+        {
+            var z = (GameObject)zombie;
+            float dist = (playerPos - z.transform.position).magnitude;
+            if (dist < closest)
+            {
+                closest = dist;
+            }
+        }
+
+        return closest;
+    }
 
 	public void Update(){
 		timeRun.text = "Time run: "+ GetTime() + " s";
+		if (processScore)
+			score.text = "Score: " + (GetTime () - warmupTime);
+		zombiesOutrun.text = "Outrun: " + outrun;
+	}
+
+	private void UpdateScore(){
+		processScore = true;
 	}
 
 	public double GetTime(){
 		return Math.Round (Time.timeSinceLevelLoad, 1);
 	}
 
+	public void TurnOffText(){
+		timeRun.GetComponent<Text>().enabled = false;
+		score.GetComponent<Text>().enabled = false;
+		zombiesOutrun.GetComponent<Text>().enabled = false;
+	}
 
 	public void ShowEndGameMenu(){
 		//endgameMenu.SetActive (!endgameMenu.activeSelf);	// For toggling

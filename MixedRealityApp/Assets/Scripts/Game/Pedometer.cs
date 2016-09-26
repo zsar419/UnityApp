@@ -8,7 +8,7 @@ public class Pedometer : MonoBehaviour {
 	public Text stepText;
 
 
-	private float loLim = 0.005F;
+	/*private float loLim = 0.005F;
 	private float hiLim = 0.1F;
 	private int steps = 0;
 	private bool stateH = false;
@@ -17,14 +17,9 @@ public class Pedometer : MonoBehaviour {
 	private float fLow = 0.2F;
 	private float avgAcc;
 
-    public int currSteps
-    {
-        get { return steps; }
-    }
-
-	public int stepDetector(){
-		curAcc = Mathf.Lerp (curAcc, Input.acceleration.magnitude, Time.deltaTime * fHigh);
-		avgAcc = Mathf.Lerp (avgAcc, Input.acceleration.magnitude, Time.deltaTime * fLow);
+	public int getSteps(){
+		curAcc = Mathf.Lerp (curAcc, Input.acceleration.z, Time.deltaTime * fHigh);
+		avgAcc = Mathf.Lerp (avgAcc, Input.acceleration.z, Time.deltaTime * fLow);
 		float delta = curAcc - avgAcc;
 
 		if (!stateH) {
@@ -44,12 +39,12 @@ public class Pedometer : MonoBehaviour {
 
 	void FixedUpdate() {
 		//checkIsMovement ();
-		stepDetector();
-		stepText.text = "Counter: " + steps;
-	}
+		stepText.text = "Counter: " + getSteps();
+	}*/
 
-	/*private AndroidJavaObject plugin;
-	private float initialStep, steps;
+	private AndroidJavaObject plugin;
+	public float steps = 0;
+	private float initialStep;
 
 	void Start () {
 		#if UNITY_ANDROID
@@ -72,33 +67,18 @@ public class Pedometer : MonoBehaviour {
 	void Update () {
 		#if UNITY_ANDROID
 		if (plugin != null) {
-			stepText.text = "Steps: " + stepDetector(); 
+			steps = plugin.Call<float[]>("getSensorValues", "stepcounter")[0] - initialStep;
+			stepText.text = "Steps: " + steps; 
 			//displayVals("stepcounter");
 		}
 		#endif
 	}
+
 	// For displaying other android sensor properties if required
-	private void displayVals(string input){
+	/*private void displayVals(string input){
 		stepText.text += input+": ";
 		plugin.Call<float[]>("getSensorValues", input).ToList().ForEach(s => stepText.text += s.ToString("0.00") + ", ");
 		stepText.text += "\n";
-	}
-
-	public float stepDetector(){
-		return plugin.Call<float[]>("getSensorValues", "stepcounter")[0] - initialStep;
-	}*/
-
-
-	/*void Update(){
-		stepText.text = "Steps: " + steps;
-	}
-
-	public float GetSteps(){
-		return steps;
-	}
-
-	public void IncrementPCSteps(){
-		steps++;
 	}*/
 
 }
