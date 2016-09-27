@@ -5,8 +5,6 @@ using System.Linq;
 using System.Collections.Generic;
 
 public class Pedometer : MonoBehaviour {
-	public Text stepText;
-
 
 	/*private float loLim = 0.005F;
 	private float hiLim = 0.1F;
@@ -43,10 +41,9 @@ public class Pedometer : MonoBehaviour {
 	}*/
 
 	private AndroidJavaObject plugin;
-	public float steps = 0;
-	private float initialStep;
+	private float initialStep, steps = 0;
 
-	void Start () {
+	/*void Start () {
 		#if UNITY_ANDROID
 		plugin = new AndroidJavaClass("jp.kshoji.unity.sensor.UnitySensorPlugin").CallStatic<AndroidJavaObject>("getInstance");
 		plugin.Call("setSamplingPeriod", 100 * 1000); // refresh sensor 100 mSec eachc
@@ -72,7 +69,7 @@ public class Pedometer : MonoBehaviour {
 			//displayVals("stepcounter");
 		}
 		#endif
-	}
+	}*/
 
 	// For displaying other android sensor properties if required
 	/*private void displayVals(string input){
@@ -80,5 +77,7 @@ public class Pedometer : MonoBehaviour {
 		plugin.Call<float[]>("getSensorValues", input).ToList().ForEach(s => stepText.text += s.ToString("0.00") + ", ");
 		stepText.text += "\n";
 	}*/
+
+	public float GetSteps(){ return steps; }
 
 }
