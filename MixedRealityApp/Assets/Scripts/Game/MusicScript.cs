@@ -19,6 +19,10 @@ public class MusicScript : MonoBehaviour
         tracks.Add((AudioClip)Resources.Load("Audio/Music/Conceal"));
         tracks.Add((AudioClip)Resources.Load("Audio/Music/Constricted"));
         tracks.Add((AudioClip)Resources.Load("Audio/Music/Corrupted"));
+        tracks.Add((AudioClip)Resources.Load("Audio/Music/Responsible"));
+        tracks.Add((AudioClip)Resources.Load("Audio/Music/Shadowed"));
+        tracks.Add((AudioClip)Resources.Load("Audio/Music/Suspended"));
+        tracks.Add((AudioClip)Resources.Load("Audio/Music/Within Sight"));
 
         audioTrack.loop = false;
         PlayRandomTrack();
@@ -35,10 +39,15 @@ public class MusicScript : MonoBehaviour
         var otherscript = uiManager.GetComponent<GameMain>();
         closestDist = otherscript.GetClosestDist();
 
-        if (closestDist < zombieCloseThreshold)
+        //increase heart-beat rate as zombie gets very close
+        if (closestDist < zombieCloseThreshold )
         {
-            heartBeat.pitch = 1.5f;
-            zombieCloseThreshold = 0;
+
+            heartBeat.pitch = Mathf.Lerp(heartBeat.pitch, 1.5f, 0.5f * Time.deltaTime);
+        }
+        else
+        {
+            heartBeat.pitch = 1;
         }
 
     }
