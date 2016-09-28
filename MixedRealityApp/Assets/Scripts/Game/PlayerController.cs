@@ -1,79 +1,70 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System;
-using System.Collections;
 
 public class PlayerController : MonoBehaviour {
+	public Text playerPos;
+	public Text playerRot;
+	public Text ARCameraRot;
+	public GameObject ARCamera;
+
 	public float metresPerStep;
-	public GameObject gameUIManager;
+	public AudioClip caughtAudio;
+	public AudioSource caughtAudioSource;
+
+	private GameObject gameUIManager;
 	private int currSteps = 0, lastSteps = 0;
 	private float distance = 0;
-	public Text distanceText;
 
-	public Text gameEndTimeRun, gameEndScoreText, gameEndDistanceText, gameEndOutrun;
-	public Text maxScoreText, maxDistanceText, maxOutrunText;
-
-	public Text maxTimeRun;
-	public Text maxtepsText;
-	//public Text maxDistanceText;
-    public AudioClip caughtAudio;
-    public AudioSource caughtAudioSource;
+	void Start(){
+		gameUIManager = GameObject.Find ("GameUIManager");
+	}
 
 	void FixedUpdate(){
-        lastSteps = currSteps;
-		currSteps = Int32.Parse(""+gameUIManager.GetComponent<Pedometer> ().steps);
-        
+		// Update player rotation based on camera
+		transform.eulerAngles = ARCamera.transform.eulerAngles;
+
+		// Debug text
+		playerPos.text = "Player Pos: "+this.transform.position;
+		playerRot.text = "Player Rot: "+this.transform.eulerAngles;
+		ARCameraRot.text = "ARCamera Rot "+ARCamera.transform.eulerAngles;
+
+		// Updating steps
+		lastSteps = currSteps;
+		currSteps = (int)gameUIManager.GetComponent<Pedometer> ().GetSteps();
+		Vector3 playerDir = new Vector3(transform.forward.x, 0, transform.forward.z);
+
 		// PC Controls
 		float vertical = Input.GetAxis ("Vertical");
-		Vector3 forwardZ = new Vector3(0,0,vertical * Time.fixedDeltaTime * metresPerStep);
-		this.transform.Translate (forwardZ, Space.World);
-        
-		// To make it realistic we can get user rotation and translate in that direction so player is not confined to Z axis
-		forwardZ.z = (currSteps - lastSteps) * metresPerStep;
-        this.transform.Translate(forwardZ, Space.Self);
-		distance = (float)Math.Round ((float)this.transform.position.magnitude, 2);
-		distanceText.text = "Distance: " + distance + "m";
+		float movement = vertical * Time.fixedDeltaTime * metresPerStep;
+		transform.Translate (playerDir * movement);
+
+		movement += (currSteps - lastSteps) * metresPerStep;
+		this.transform.Translate(playerDir * movement, Space.Self);
+		// Absolute distance - total distance travelled
+		distance += movement < 0 ? -movement : movement;
+	}
+
+	void LateUpdate(){
+		
+		ARCamera.transform.position = transform.position;
+		Vector3 manualRotation = new Vector3(0.0f, Input.GetAxis("Horizontal"), 0.0f);
+		ARCamera.transform.Rotate (manualRotation * 30);
+
+
+			
 	}
 
 	public void OnTriggerEnter(Collider other){
-		// Game end panel data
 		if(other.tag == "Zombie"){
-			// Turn off other text
-			gameUIManager.GetComponent<GameMain> ().TurnOffText();
-			distanceText.GetComponent<Text>().enabled = false;
+			gameUIManager.GetComponent<GameMain> ().ProcessEndGame();
 
-
-            //Stops the background music and plays a final audio clip when the player is caught. 
-            caughtAudioSource.clip = caughtAudio;
-            caughtAudioSource.Play();
-
-			// Displaying current game stats
-			float currTime = (float)gameUIManager.GetComponent<GameMain> ().GetTime ();
-			//float currSteps = gameUIManager.GetComponent<Pedometer>().GetSteps();
-			//float currSteps = gameUIManager.GetComponent<Pedometer>().steps;
-			float currScore = currTime - (float)gameUIManager.GetComponent<GameMain> ().warmupTime;	// Set score based on parameters
-			float currDistance = distance;
-			int outrun = gameUIManager.GetComponent<GameMain> ().outrun;
-
-			gameEndTimeRun.text += currTime + " s";
-			gameEndScoreText.text += currScore;
-			gameEndDistanceText.text += currDistance + " m";
-			gameEndOutrun.text += outrun;
-
-			// Calculating if current game stats > previous maximum stats
-			GameManager.Instance.maxScore = Mathf.Max (currScore, GameManager.Instance.maxScore);
-			GameManager.Instance.maxDistance = Mathf.Max (currDistance, GameManager.Instance.maxDistance);
-			GameManager.Instance.maxZombiesOutrun = Mathf.Max (outrun, GameManager.Instance.maxZombiesOutrun);
-			GameManager.Instance.Save (GameManager.Instance.maxScore, GameManager.Instance.maxDistance, GameManager.Instance.maxZombiesOutrun);
-
-			// Comparison in relation to max stats
-			maxScoreText.text += GameManager.Instance.maxScore;
-			maxDistanceText.text += GameManager.Instance.maxDistance + " m";
-			maxOutrunText.text += GameManager.Instance.maxZombiesOutrun;
-
-			gameUIManager.GetComponent<GameMain>().ShowEndGameMenu();
+			//Stops the background music and plays a final audio clip when the player is caught. 
+			//caughtAudioSource.clip = caughtAudio;
+			//caughtAudioSource.Play();
 
 		}
 	}
+
+	public float GetPlayerDistance(){ return distance; }
 		
 }
