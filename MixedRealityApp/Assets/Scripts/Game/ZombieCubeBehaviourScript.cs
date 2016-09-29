@@ -31,6 +31,10 @@ public class ZombieCubeBehaviourScript : MonoBehaviour {
 		rb.AddForce (totalForce);
     }
 
+	public void SetSpeed(float speed){
+		movementSpeed = speed;
+	}
+
     public float getDistanceFromPlayer(){
         //Vector3 heading = player.transform.position - this.transform.position;
         return (player.transform.position - this.transform.position).magnitude;

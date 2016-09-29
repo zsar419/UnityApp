@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
 
 public class GameMain : MonoBehaviour {
 	// UI text
@@ -18,48 +18,47 @@ public class GameMain : MonoBehaviour {
 	public int maxZombies;
 	public float zombieSpawnDist, maxZombieDist;
 
-	private List<UnityEngine.Object> zombieList = new List<UnityEngine.Object>();
+	private List<GameObject> zombieList = new List<GameObject>();
 	private int outrun = 0;
-	private bool processScore;
+	private float zombieSpeed;
 
 	void Start () {
 		endgameMenu.SetActive (false);
 		mainMenu.onClick.AddListener (() => ToMenu());
 		restart.onClick.AddListener (() => RestartGame());
+		Invoke ("EndTraining", warmupTime-1);	
 		InvokeRepeating ("ProcessGame", warmupTime, 10);
-		Invoke ("UpdateScore", warmupTime);	
 	}
 
 	public void Update(){
 		timeRun.text = "Time run: "+ Math.Round(Time.timeSinceLevelLoad,2) + " s";
-		if (processScore)
+		if (Time.timeSinceLevelLoad>=warmupTime)
 			score.text = "Score: " + Math.Round((Time.timeSinceLevelLoad - warmupTime),2);
 		zombiesOutrun.text = "Outrun: " + outrun;
 		distance.text = "Distance: " + Math.Round(player.GetComponent<PlayerController>().GetPlayerDistance(),2) + "m";
 	}
 
-	private void UpdateScore(){
-		processScore = true;
+	private void EndTraining(){
+		// Setting zombie speed for game
+		zombieSpeed = player.GetComponent<PlayerController>().GetPlayerDistance()/Time.timeSinceLevelLoad;
+		zombie.GetComponent<ZombieCubeBehaviourScript> ().SetSpeed (zombieSpeed);
 	}
 
 	private void ProcessGame(){
+		// Spawning zombies in the scene every x seconds (10)
 		if (zombieList.Count < maxZombies) {
-			// Zombies above/below player
-
-			// Set game difficulty
 			Vector3 playerDir = new Vector3(player.transform.forward.x, 0, player.transform.forward.z);
 			Vector3 direction = Quaternion.AngleAxis(UnityEngine.Random.Range(-45.0f, 45.0f), Vector3.up) * playerDir;
 			Vector3 spawnPos = player.transform.position + direction * -zombieSpawnDist;
 			spawnPos.y = -1.3f;
-			var zombieInstance = Instantiate (zombie, spawnPos, Quaternion.identity);
+			GameObject zombieInstance = (GameObject)Instantiate (zombie, spawnPos, Quaternion.identity);
 			zombieList.Add (zombieInstance);
 		}
 
 		// Removing from list if zombie(s) exceed max distance
-		Vector3 playerPos = player.transform.position;
 		for(int i = 0;i<zombieList.Count;i++){
-			var z = (GameObject)zombieList [i];
-			float zombieDist = (playerPos - z.transform.position).magnitude;
+			GameObject z = zombieList [i];
+			float zombieDist = (player.transform.position - z.transform.position).magnitude;
 			if(zombieDist>maxZombieDist){
 				outrun++;
 				zombieList.RemoveAt (i);
