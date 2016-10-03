@@ -42,6 +42,7 @@ public class Pedometer : MonoBehaviour {
 
 	private AndroidJavaObject plugin;
 	private float initialStep, steps = 0;
+	private float manualSteps;
 
 	void Start () {
 		#if UNITY_ANDROID
@@ -64,11 +65,14 @@ public class Pedometer : MonoBehaviour {
 	void Update () {
 		#if UNITY_ANDROID
 		if (plugin != null) {
-			steps = plugin.Call<float[]>("getSensorValues", "stepcounter")[0] - initialStep;
+			steps = plugin.Call<float[]>("getSensorValues", "stepcounter")[0] - initialStep + manualSteps;
 		}
 		#endif
 	}
 
+	public void ManualStepIncrement(){
+		manualSteps++;
+	}
 	public float GetSteps(){ return steps; }
 
 }

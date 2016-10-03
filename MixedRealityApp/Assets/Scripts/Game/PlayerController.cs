@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviour {
 
 	void FixedUpdate(){
 		// Update player rotation based on camera
-		transform.eulerAngles = ARCamera.transform.eulerAngles;
+		transform.rotation = ARCamera.transform.rotation;
 
 		// Debug text
 		playerPos.text = "Player Pos: "+this.transform.position;
@@ -31,27 +31,27 @@ public class PlayerController : MonoBehaviour {
 		// Updating steps
 		lastSteps = currSteps;
 		currSteps = (int)gameUIManager.GetComponent<Pedometer> ().GetSteps();
-		Vector3 playerDir = new Vector3(transform.forward.x, 0, transform.forward.z);
+		float movement = (currSteps - lastSteps) * metresPerStep;
 
 		// PC Controls
-		float vertical = Input.GetAxis ("Vertical");
-		float movement = vertical * Time.fixedDeltaTime * metresPerStep;
-		transform.Translate (playerDir * movement);
+		float pcMovementConst = 7 / 3f;
+		float vertical = Input.GetAxis ("Vertical") * pcMovementConst;
+		movement += vertical * Time.fixedDeltaTime * metresPerStep;
 
-		movement += (currSteps - lastSteps) * metresPerStep;
-		this.transform.Translate(playerDir * movement, Space.Self);
+
+		transform.Translate (transform.forward * movement, Space.World);
+		//transform.Translate (transform.forward * movement);
+		// Resetting y
+		transform.position = new Vector3(transform.position.x, 0, transform.position.z);
 		// Absolute distance - total distance travelled
 		distance += movement < 0 ? -movement : movement;
+
 	}
 
 	void LateUpdate(){
-		
 		ARCamera.transform.position = transform.position;
 		Vector3 manualRotation = new Vector3(0.0f, Input.GetAxis("Horizontal"), 0.0f);
 		ARCamera.transform.Rotate (manualRotation * 30);
-
-
-			
 	}
 
 	public void OnTriggerEnter(Collider other){
