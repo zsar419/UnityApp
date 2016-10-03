@@ -8,7 +8,9 @@ public class ZombieAudioScript : MonoBehaviour {
     public AudioSource source;
     bool keepPlaying = true;
     System.Random rnd = new System.Random();
-
+    
+    public AudioClip spawnSound;
+    private bool justSpawned = true;
     //Range of time for which zombies should randomly make another noise. 
     public int minWaitSeconds;
     public int maxWaitSeconds;
@@ -20,8 +22,6 @@ public class ZombieAudioScript : MonoBehaviour {
         sounds.Add((AudioClip)Resources.Load("Audio/Zombie Sounds/zombieattack"));
         sounds.Add((AudioClip)Resources.Load("Audio/Zombie Sounds/zombiegroancloser"));
         sounds.Add((AudioClip)Resources.Load("Audio/Zombie Sounds/zombiegroandistant"));
-        sounds.Add((AudioClip)Resources.Load("Audio/Zombie Sounds/zombiegrunt1"));
-        sounds.Add((AudioClip)Resources.Load("Audio/Zombie Sounds/zombiegrunt2"));
         sounds.Add((AudioClip)Resources.Load("Audio/Zombie Sounds/zombiehighgroan"));
         sounds.Add((AudioClip)Resources.Load("Audio/Zombie Sounds/zombielowgroan"));
         source.clip = sounds[0];
@@ -38,8 +38,19 @@ public class ZombieAudioScript : MonoBehaviour {
     {
         while (keepPlaying)
         {
-            source.clip = sounds[rnd.Next(0, sounds.Count-1)]; //Play a random clip
-            source.Play();
+
+            if (justSpawned)
+            {
+                source.clip = spawnSound;
+                source.Play();
+                justSpawned = false;
+            }
+            else
+            {
+
+                source.clip = sounds[rnd.Next(0, sounds.Count - 1)]; //Play a random clip
+                source.Play();
+            }
             yield return new WaitForSeconds(rnd.Next(minWaitSeconds, maxWaitSeconds)); //wait a random am
         }
     }

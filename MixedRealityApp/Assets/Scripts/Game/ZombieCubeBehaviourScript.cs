@@ -1,24 +1,23 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class ZombieCubeBehaviourScript : MonoBehaviour {
 
-    public float movementSpeed = 0.1F;
-	//public float maxForce = 500;
+	public float movementSpeed;
     private GameObject player;	// ARCamera
     private Rigidbody rb;		// Cube
-    private Animator zAnim;
+   	private Animator zAnim;
 
 	void Start () {
         rb = GetComponent<Rigidbody>();
-		player = GameObject.FindGameObjectsWithTag("Player")[0];
-        // Set zombie position x units behind player
-        zAnim = GetComponent<Animator>();
+		player = GameObject.Find("Player");
+		zAnim = GetComponent<Animator>();
+		//player = GameObject.FindGameObjectsWithTag ("MainCamera")[0];
 	}
 
-    void Update()
-    {
-        transform.LookAt(player.transform);
+    void Update(){
+		Vector3 pos = player.transform.position;
+		pos.y = this.transform.position.y;
+		transform.LookAt(pos);
     }
 
     void FixedUpdate(){
@@ -32,8 +31,11 @@ public class ZombieCubeBehaviourScript : MonoBehaviour {
 		rb.AddForce (totalForce);
     }
 
-    public float getDistanceFromPlayer()
-    {
+	public void SetSpeed(float speed){
+		movementSpeed = speed;
+	}
+
+    public float getDistanceFromPlayer(){
         //Vector3 heading = player.transform.position - this.transform.position;
         return (player.transform.position - this.transform.position).magnitude;
     }
