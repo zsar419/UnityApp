@@ -109,6 +109,10 @@ public class GameMain : MonoBehaviour {
 		maxDistanceText.text += Math.Round(GameManager.Instance.maxDistance,2) + " m";
 		maxOutrunText.text += GameManager.Instance.maxZombiesOutrun;
 
+
+        MusicScript mu = player.GetComponent<MusicScript>();
+        mu.StopAllMusic();
+
 		// Showing endgame menu and pausing game
 		endgameMenu.SetActive (true);
 		Time.timeScale = 0;
