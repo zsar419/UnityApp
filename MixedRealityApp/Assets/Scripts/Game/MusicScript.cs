@@ -62,4 +62,11 @@ public class MusicScript : MonoBehaviour
         audioTrack.clip = tracks[trackIndex];
         audioTrack.Play();
     }
+
+
+    public void StopAllMusic()
+    {
+        audioTrack.Stop();
+        heartBeat.Stop();
+    }
 }
