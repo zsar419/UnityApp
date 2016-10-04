@@ -41,7 +41,7 @@ public class GameMain : MonoBehaviour {
 	private void EndTraining(){
 		// Setting zombie speed for game
 		zombieSpeed = player.GetComponent<PlayerController>().GetPlayerDistance()/Time.timeSinceLevelLoad;
-		zombie.GetComponent<ZombieCubeBehaviourScript> ().SetSpeed (zombieSpeed);
+		zombie.GetComponent<ZombieCubeBehaviourScript>().playerSpeed = zombieSpeed;
 	}
 
 	private void ProcessGame(){

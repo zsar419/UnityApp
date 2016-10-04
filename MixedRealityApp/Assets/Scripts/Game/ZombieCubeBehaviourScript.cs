@@ -3,7 +3,7 @@
 public class ZombieCubeBehaviourScript : MonoBehaviour {
 	public float movementModifier = 1f;
 
-	private float playerSpeed;
+	public float playerSpeed;
     private GameObject player;	// ARCamera
     private Rigidbody rb;		// Cube
    	private Animator zAnim;
@@ -12,7 +12,8 @@ public class ZombieCubeBehaviourScript : MonoBehaviour {
         rb = GetComponent<Rigidbody>();
 		player = GameObject.Find("Player");
 		zAnim = GetComponent<Animator>();
-		//player = GameObject.FindGameObjectsWithTag ("MainCamera")[0];
+        //player = GameObject.FindGameObjectsWithTag ("MainCamera")[0];
+        //playerSpeed = 5.0f;
 	}
 
     void Update(){
@@ -27,14 +28,18 @@ public class ZombieCubeBehaviourScript : MonoBehaviour {
 		float distance = heading.magnitude;		// Vector magnitude
         zAnim.SetFloat("ZombieDist", distance);
         // Vector3 direction = heading / distance;		// Normalized vector
-		// Vector3 totalForce = direction * movementSpeed * Time.deltaTime;
-		//rb.AddForce (totalForce);
+        // Vector3 totalForce = direction * movementSpeed * Time.deltaTime;
+        //rb.AddForce (totalForce);
+        //playerSpeed = 1.0f;
 		Vector3 zombieDir = new Vector3(transform.forward.x, 0f, transform.forward.z);
 		rb.velocity = zombieDir * playerSpeed * movementModifier;
+        print("playerSpeed = " + playerSpeed);
+        print("zombieDir = " + zombieDir.ToString());
     }
 
 	public void SetSpeed(float speed){
 		playerSpeed = speed;
+        playerSpeed = 2.0F;
 	}
 
     public float getDistanceFromPlayer(){
