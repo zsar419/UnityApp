@@ -23,12 +23,13 @@ public class ZombieCubeBehaviourScript : MonoBehaviour {
     void FixedUpdate(){
 		Vector3 heading = player.transform.position - this.transform.position;	// Get direction vector of movement
         //heading.y = 0;
-        var distance = heading.magnitude;		// Vector magnitude
+		float distance = heading.magnitude;		// Vector magnitude
         zAnim.SetFloat("ZombieDist", distance);
-        var direction = heading / distance;		// Normalized vector
-		Vector3 totalForce = direction * movementSpeed * Time.deltaTime;
-		// Need to fix total force, need cap for vector
-		rb.AddForce (totalForce);
+        // Vector3 direction = heading / distance;		// Normalized vector
+		// Vector3 totalForce = direction * movementSpeed * Time.deltaTime;
+		//rb.AddForce (totalForce);
+		Vector3 zombieDir = new Vector3(transform.forward.x, 0f, transform.forward.z);
+		rb.velocity = zombieDir * movementSpeed * 0.9f;
     }
 
 	public void SetSpeed(float speed){
