@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 
 public class ZombieCubeBehaviourScript : MonoBehaviour {
+	public float movementModifier = 1f;
 
-	public float movementSpeed;
+	private float playerSpeed;
     private GameObject player;	// ARCamera
     private Rigidbody rb;		// Cube
    	private Animator zAnim;
@@ -29,11 +30,11 @@ public class ZombieCubeBehaviourScript : MonoBehaviour {
 		// Vector3 totalForce = direction * movementSpeed * Time.deltaTime;
 		//rb.AddForce (totalForce);
 		Vector3 zombieDir = new Vector3(transform.forward.x, 0f, transform.forward.z);
-		rb.velocity = zombieDir * movementSpeed * 0.9f;
+		rb.velocity = zombieDir * playerSpeed * movementModifier;
     }
 
 	public void SetSpeed(float speed){
-		movementSpeed = speed;
+		playerSpeed = speed;
 	}
 
     public float getDistanceFromPlayer(){
