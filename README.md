@@ -1,7 +1,7 @@
 # UnityApp
 Unity Mixed Reality (AR + VR) App for Compsci 715
 
-Contributions:
+Contributions:  Zeeshan created the scenes in Unity, and did most of the UI.  Andrew implemented the audio.  Riki made our video.  James set up the animation of the zombies.  Everything else was done as a group effort - we often were all around a computer at once working on something together.  The fact that one person committed it isn't necessarily evidence that it was entirely done by them alone.
 
 Instructions:
   - how to run in unity?

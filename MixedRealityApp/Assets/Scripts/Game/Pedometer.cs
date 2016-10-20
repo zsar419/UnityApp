@@ -5,7 +5,7 @@ using System.Linq;
 using System.Collections.Generic;
 
 public class Pedometer : MonoBehaviour {
-
+    // Currently unused, this was a script to do a pedometer by hand, but we have been using the Android built-in one
 	/*private float loLim = 0.005F;
 	private float hiLim = 0.1F;
 	private int steps = 0;
