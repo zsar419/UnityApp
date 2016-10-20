@@ -5,7 +5,7 @@ Contributions:  Zeeshan created the scenes in Unity, and did most of the UI.  An
 
 Instructions:
   - how to run in unity?
-  - how to build to android phone?
+  - how to build to android phone?  Currently only Android is working - pedometer used is one built-in to Android I think.  There might be something for iOS though?
 
 
 
