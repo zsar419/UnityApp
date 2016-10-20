@@ -47,11 +47,11 @@ public class GameMain : MonoBehaviour {
 	private void ProcessGame(){
 		// Spawning zombies in the scene every x seconds (10)
 		if (zombieList.Count < maxZombies) {
-			Vector3 playerDir = new Vector3(player.transform.forward.x, 0, player.transform.forward.z);
-			Vector3 direction = Quaternion.AngleAxis(UnityEngine.Random.Range(-45.0f, 45.0f), Vector3.up) * playerDir;
-			Vector3 spawnPos = player.transform.position + direction * -zombieSpawnDist;
+			Vector3 playerDir = new Vector3(player.transform.forward.x, 0, player.transform.forward.z);  // Establish heading of player
+			Vector3 direction = Quaternion.AngleAxis(UnityEngine.Random.Range(-45.0f, 45.0f), Vector3.up) * playerDir;  // Randomize angle behind player for zombies to spawn
+			Vector3 spawnPos = player.transform.position + direction * -zombieSpawnDist; // Create final spawn position of zombie
 			spawnPos.y = -1.3f;
-			GameObject zombieInstance = (GameObject)Instantiate (zombie, spawnPos, Quaternion.identity);
+			GameObject zombieInstance = (GameObject)Instantiate (zombie, spawnPos, Quaternion.identity);  // Spawn zombie
 			zombieList.Add (zombieInstance);
 		}
 

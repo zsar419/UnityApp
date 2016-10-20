@@ -40,7 +40,6 @@ public class PlayerController : MonoBehaviour {
 
 
 		transform.Translate (transform.forward * movement, Space.World);
-		//transform.Translate (transform.forward * movement);
 		// Resetting y
 		transform.position = new Vector3(transform.position.x, 0, transform.position.z);
 		// Absolute distance - total distance travelled
