@@ -19,7 +19,7 @@
 - Created the scenes in Unity and most of the UI
 - Implemented most of game logic
 
-</b>Instructions:</b>
+<b>Instructions:</b>
 - Run the exergame (scene) from main menu (to prevent unexpected crashes)
 - Exergame will pause upon loading Headset mode and Hendheld mode
 - This is due to the android sensor plugin (which is compatible for android smartphones only)
