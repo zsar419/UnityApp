@@ -6,12 +6,15 @@ The Chase (AR + VR) Android Exergame for Compsci 715
 <b>Andrew: AceMaester</b>
 - Implemented zombies and scene audio
 - Processed statistics
+
 <b>James: Jarak-Jakar</b>
 - Set up the animation of the zombies
 - Wrote most of user study documents
+
 <b>Rikki: ObsessedAnalytics</b>
 - Made exergame promotional video
 - Imported iOS plugin (no support for this yet)
+
 <b>Zeeshan: zsar419</b>
 - Created the scenes in Unity and most of the UI
 - Implemented most of game logic
