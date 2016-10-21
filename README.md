@@ -24,6 +24,10 @@
 - Exergame will pause upon loading Headset mode and Hendheld mode
 - This is due to the android sensor plugin (which is compatible for android smartphones only)
 - You can press play to continue
+
+<b>Build to Android</b>
+- To play this exergame on android you must download the required android packages in Build settings then press "Build and Run" to run the exergame on your Android smartphone 
+
   
 <b>Controls (PC):</b>
 - For debugging, you can increment player steps manually (as if person were to walk in real life) by pressing the "+steps" button
