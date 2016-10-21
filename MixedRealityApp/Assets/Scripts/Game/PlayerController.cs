@@ -7,11 +7,11 @@ public class PlayerController : MonoBehaviour {
 	public Text ARCameraRot;
 	public GameObject ARCamera;
 
+	public float metresPerStep;
 	public AudioClip caughtAudio;
 	public AudioSource caughtAudioSource;
 
 	private GameObject gameUIManager;
-	private float metresPerStep = 0.8f;
 	private int currSteps = 0, lastSteps = 0;
 	private float distance = 0;
 
@@ -40,7 +40,6 @@ public class PlayerController : MonoBehaviour {
 
 
 		transform.Translate (transform.forward * movement, Space.World);
-		//transform.Translate (transform.forward * movement);
 		// Resetting y
 		transform.position = new Vector3(transform.position.x, 0, transform.position.z);
 		// Absolute distance - total distance travelled
