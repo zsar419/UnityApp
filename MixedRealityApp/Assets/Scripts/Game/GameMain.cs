@@ -10,22 +10,25 @@ public class GameMain : MonoBehaviour {
 	public Text timeRun, score, distance, zombiesOutrun;
 	public Text gameEndTimeRun, gameEndScoreText, gameEndDistanceText, gameEndOutrun;
 	public Text maxScoreText, maxDistanceText, maxOutrunText;
-	public Button mainMenu, restart; 
+	public Button mainMenu, restart, pauseBtn;
 
 	// Game setting variables
 	public GameObject player, zombie;
 	public int warmupTime;
 	public int maxZombies;
-	public float zombieSpawnDist, maxZombieDist;
+	public float minZombieSpeed, zombieSpawnDist, maxZombieDist;
 
 	private List<GameObject> zombieList = new List<GameObject>();
 	private int outrun = 0;
 	private float zombieSpeed;
+	private float readyTime = 10f;
+	private bool isPaused = false;
 
 	void Start () {
 		endgameMenu.SetActive (false);
 		mainMenu.onClick.AddListener (() => ToMenu());
 		restart.onClick.AddListener (() => RestartGame());
+		pauseBtn.onClick.AddListener (() => ToggleGameState());
 		Invoke ("EndTraining", warmupTime-1);	
 		InvokeRepeating ("ProcessGame", warmupTime, 10);
 	}
@@ -40,18 +43,22 @@ public class GameMain : MonoBehaviour {
 
 	private void EndTraining(){
 		// Setting zombie speed for game
-		zombieSpeed = player.GetComponent<PlayerController>().GetPlayerDistance()/Time.timeSinceLevelLoad;
-		zombie.GetComponent<ZombieCubeBehaviourScript>().playerSpeed = zombieSpeed;
+		zombieSpeed = player.GetComponent<PlayerController>().GetPlayerDistance()/(Time.timeSinceLevelLoad-readyTime);
+		zombie.GetComponent<ZombieCubeBehaviourScript>().playerSpeed = Mathf.Max(zombieSpeed, minZombieSpeed);
 	}
 
 	private void ProcessGame(){
 		// Spawning zombies in the scene every x seconds (10)
 		if (zombieList.Count < maxZombies) {
-			Vector3 playerDir = new Vector3(player.transform.forward.x, 0, player.transform.forward.z);  // Establish heading of player
-			Vector3 direction = Quaternion.AngleAxis(UnityEngine.Random.Range(-45.0f, 45.0f), Vector3.up) * playerDir;  // Randomize angle behind player for zombies to spawn
-			Vector3 spawnPos = player.transform.position + direction * -zombieSpawnDist; // Create final spawn position of zombie
+			// Establish heading of player
+			Vector3 playerDir = new Vector3(player.transform.forward.x, 0, player.transform.forward.z);
+			// Randomize angle behind player for zombies to spawn
+			Vector3 direction = Quaternion.AngleAxis(UnityEngine.Random.Range(-45.0f, 45.0f), Vector3.up) * playerDir;
+			// Create final spawn position of zombie
+			Vector3 spawnPos = player.transform.position + direction * -zombieSpawnDist;
 			spawnPos.y = -1.3f;
-			GameObject zombieInstance = (GameObject)Instantiate (zombie, spawnPos, Quaternion.identity);  // Spawn zombie
+			// Spawn zombie
+			GameObject zombieInstance = (GameObject)Instantiate (zombie, spawnPos, Quaternion.identity);
 			zombieList.Add (zombieInstance);
 		}
 
@@ -118,9 +125,20 @@ public class GameMain : MonoBehaviour {
 		Time.timeScale = 0;
 	}
 
+	private void ToggleGameState(){
+		isPaused = !isPaused;
+		if(isPaused){
+			pauseBtn.GetComponentInChildren<Text>().text = "Play";
+			Time.timeScale = 0;
+		}else{
+			pauseBtn.GetComponentInChildren<Text>().text = "| |";
+			Time.timeScale = 1;
+		}
+	}
+
 	private void RestartGame(){
 		Time.timeScale = 1;	// Resuming time
-		SceneManager.LoadScene ("VRMode");
+		SceneManager.LoadScene (SceneManager.GetActiveScene().name);
 	}
 
 	private void ToMenu(){

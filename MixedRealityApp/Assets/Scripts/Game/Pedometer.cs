@@ -5,40 +5,6 @@ using System.Linq;
 using System.Collections.Generic;
 
 public class Pedometer : MonoBehaviour {
-    // Currently unused, this was a script to do a pedometer by hand, but we have been using the Android built-in one
-	/*private float loLim = 0.005F;
-	private float hiLim = 0.1F;
-	private int steps = 0;
-	private bool stateH = false;
-	private float fHigh = 10.0F;
-	private float curAcc= 0F;
-	private float fLow = 0.2F;
-	private float avgAcc;
-
-	public int getSteps(){
-		curAcc = Mathf.Lerp (curAcc, Input.acceleration.z, Time.deltaTime * fHigh);
-		avgAcc = Mathf.Lerp (avgAcc, Input.acceleration.z, Time.deltaTime * fLow);
-		float delta = curAcc - avgAcc;
-
-		if (!stateH) {
-			if (delta > hiLim) {
-				stateH = true;
-				steps++;
-			}
-		} else {
-			if (delta < loLim) {
-				stateH = false;
-			}
-		}
-
-		avgAcc = curAcc;
-		return steps;
-	}
-
-	void FixedUpdate() {
-		//checkIsMovement ();
-		stepText.text = "Counter: " + getSteps();
-	}*/
 
 	private AndroidJavaObject plugin;
 	private float initialStep, steps = 0;
