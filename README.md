@@ -46,5 +46,5 @@
   - Rikki has imported the iOS pedometer plugin, however it is not being utilized in this exergame
   
 <b>Promotional Video</b>
-https://www.youtube.com/watch?v=1DLpfCOBIvM&index=7&list=PLftD6w6cBkQP_v2_yISo37ZkOeDefEzGr
+- https://www.youtube.com/watch?v=1DLpfCOBIvM&index=7&list=PLftD6w6cBkQP_v2_yISo37ZkOeDefEzGr
 
