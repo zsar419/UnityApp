@@ -44,3 +44,7 @@
 - This open soursce pluging also causes the game to crash at a 50% chance - this occurs in the "Pedometer.cs" script where the android sensor is being used
 - <b>Extensible:</b> To extend exergame to other platforms, one would only have to change "Pedometer.cs" so that it can detect pedometer of the desired platform (iOS)
   - Rikki has imported the iOS pedometer plugin, however it is not being utilized in this exergame
+  
+<b>Promotional Video</b>
+https://www.youtube.com/watch?v=1DLpfCOBIvM&index=7&list=PLftD6w6cBkQP_v2_yISo37ZkOeDefEzGr
+
